@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Orbitron:regular,500,700,900" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+    <title>DrumKit</title>
+</head>
+
+<body>
+    <div class="keys"></div>
+    <script>
+        class Key {
+
+            constructor(letter, keyCode, type, sound) {
+                this.letter = letter;
+                this.keyCode = keyCode;
+                this.type = type;
+                this.sound = `sounds/${sound}`;
+                this.soundName = sound.split('.')[0];
+            }
+
+            template() {
+                return `
+                <div data-key=${this.keyCode} class="key ${this.type}">
+                    <kbd>${this.letter}</kbd>
+                    <span class="sound-name">${this.soundName}</span>
+                </div>
+                <audio data-key=${this.keyCode} src="${this.sound}"></audio>
+            `
+            }
+
+            elm() {
+                return document.querySelector(`div[data-key='${this.keyCode}'`)
+            }
+
+            addEvent(event, action) {
+                this.elm().addEventListener(event, action)
+            }
+
+            removeTransition(e) {
+                if (e.propertyName == "transform") {
+                    this.classList.remove('playing');
+                }
+            }
+        }
+
+        const drumKit = document.querySelector('.keys');
+        const keys = [
+            new Key('a', 65, 'black', 'boom.wav'),
+            new Key('s', 83, 'white', 'clap.wav'),
+            new Key('d', 68, 'black', 'kick.wav'),
+            new Key('f', 70, 'white', 'openhat.wav'),
+            new Key('g', 71, 'black', 'ride.wav'),
+            new Key('h', 72, 'white', 'snare.wav'),
+            new Key('j', 74, 'black', 'tink.wav'),
+            new Key('k', 75, 'white', 'tom.wav'),
+            new Key('l', 76, 'black', 'hihat.wav')
+
+        ]
+
+        keys.forEach(key => {
+            drumKit.insertAdjacentHTML('beforeend', key.template());
+            key.addEvent("transitionend", key.removeTransition)
+        });
+
+        window.addEventListener('keydown', (e) => {
+            const audio = document.querySelector(`audio[data-key='${e.keyCode}'`);
+            const key = document.querySelector(`div[data-key='${e.keyCode}'`);
+            if (audio) {
+                key.classList.add('playing');
+                audio.currentTime = 0;
+                audio.play();
+            }
+        })
+    </script>
+</body>
+
+</html>
