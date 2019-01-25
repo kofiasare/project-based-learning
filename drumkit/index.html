@@ -43,7 +43,7 @@
 
             removeTransition(e) {
                 if (e.propertyName == "transform") {
-                    this.classList.remove('playing');
+                    e.target.classList.remove('playing');
                 }
             }
         }
