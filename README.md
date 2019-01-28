@@ -1,4 +1,4 @@
 # js30
 
 - [x] Drumkit
-- [ ] Clock
+- [x] Clock
