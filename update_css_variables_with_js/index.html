@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+         :root {
+            --spacing: 0px;
+            --blur: 0px;
+            --color: yellow;
+        }
+        
+        body {
+            margin: 0;
+            background-color: azure;
+        }
+        
+        #title {
+            width: 500px;
+            margin: 20px auto;
+            text-align: center;
+            font-size: 30px;
+        }
+        
+        #title .hl {
+            color: var(--color);
+        }
+        
+        #main {
+            width: 80%;
+            margin: 20px auto;
+            display: flex;
+        }
+        
+        #main .controls {
+            padding: 10px 20px;
+        }
+        
+        #main img {
+            text-align: center;
+            border-radius: 15px;
+            background: var(--color);
+            padding: var(--spacing);
+            filter: blur(var(--blur));
+        }
+    </style>
+</head>
+
+<body>
+    <div id="title">
+        <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+    </div>
+
+    <div id="main">
+        <section class="controls">
+
+            <div>
+                <label for="spacing">Spacing:</label>
+                <input type="range" name="spacing" min="0" max="80" value="0" data-sizing="px">
+            </div>
+
+            <div>
+                <label for="blur">Blur:</label>
+                <input type="range" name="blur" min="0" max="80" value="0" data-sizing="px">
+            </div>
+
+            <div>
+                <label for="color">Color:</label>
+                <input type="color" name="color" value="#FFFB02">
+            </div>
+        </section>
+
+        <section>
+            <img src="nike.jpg" alt="">
+        </section>
+    </div>
+
+    <script>
+        const inputs = document.querySelectorAll('#main .controls input');
+        inputs.forEach(input => input.addEventListener('change', updateHandler));
+        inputs.forEach(input => input.addEventListener('mousemove', updateHandler));
+
+        function updateHandler() {
+            const unit = this.dataset.sizing || '';
+            const name = this.name;
+            const value = this.value;
+            document.documentElement.style.setProperty(`--${name}`, value + unit);
+        }
+    </script>
+</body>
+
+</html>
